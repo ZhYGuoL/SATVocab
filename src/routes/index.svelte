@@ -1,27 +1,53 @@
 <script>
-	let word = '';
-	let definitions = [];
+	let word = ''
+	let definitions = []
 
-	let questions = {};
+	let wordInput
+	let definitionInput
+
+	let questions = {}
+
+	let wordWarning = ''
+	let definitionWarning = ''
 
 	function save(word, definitions, questions) {
-        
+        if (word.length != 0 && definitions.length != 0) {
+			if (word in questions) {
+				for (let i = 0; i < definitions.length; i++) {
+					questions[word].append(definitions)
+				}
+			}
+			else {
+				questions[word] = questions
+			}
+			wordInput.value = ''
+			definitionInput.value = []
+			wordWarning = ''
+			definitionWarning = ''
+			return
+		}
+		else {
+			if (word.length != 0) {
+				wordWarning = 'A word is needed'
+			}
+			if (definitions.length != 0) {
+				definitionWarning = 'A definition is needed'
+			}
+		}
     }
 </script>
 
 <h1 class="text-5xl font-bold font-mono">Hello world!</h1>
 
-<input bind:value={word} placeholder="enter a word" />
-<input bind:value={definitions} placeholder="enter a definition" />
 
 <form class="w-full max-w-sm">
 	<div class="md:flex md:items-center mb-6">
 		<div class="md:w-1/3">
 			<label
-				class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+				class="block text-gray-500 font-bold md:text-center mb-1 md:mb-0"
 				for="inline-full-name"
 			>
-				Full Name
+				Word
 			</label>
 		</div>
 		<div class="md:w-2/3">
@@ -31,16 +57,23 @@
 				type="text"
 				placeholder="Enter a word"
                 bind:value={word}
+				bind:this={wordInput}
 			/>
+		</div>
+	</div>
+	<div class="md:flex md:items-center">
+		<div class="md:w-1/3"/>
+		<div class="md:w-2/3 mb-1 font-mono text-red-800">
+			{wordWarning}
 		</div>
 	</div>
 	<div class="md:flex md:items-center mb-6">
 		<div class="md:w-1/3">
 			<label
-				class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+				class="block text-gray-500 font-bold md:text-center mb-1 md:mb-0"
 				for="inline-password"
 			>
-				Password
+				Definition(s)
 			</label>
 		</div>
 		<div class="md:w-2/3">
@@ -50,18 +83,29 @@
 				type="text"
 				placeholder="Enter definition(s)"
                 bind:value={definitions}
+				bind:this={definitionInput}
 			/>
 		</div>
 	</div>
 	<div class="md:flex md:items-center">
+		<div class="md:w-1/3"/>
+		<div class="md:w-2/3 mb-1 font-mono text-red-800">
+			{definitionWarning}
+		</div>
+	</div> 
+		
+	<div class="md:flex md:items-center">
 		<div class="md:w-1/3" />
 		<div class="md:w-2/3">
-			<button
-				class="bg-blue-500 text-white font-bold py-2 px-10 border-b-4 border-blue-700 hover:border-blue-600 rounded-full active:bg-blue-600 active:scale-95 transition-transform active:border-blue-1000"
-                on:click={() => save(word, definitions, questions)}
-			>
-				Button
-			</button>
+			<form method=“get”> 
+				<button
+					type="button"
+					class="bg-blue-500 text-white font-bold py-2 px-10 border-b-4 border-blue-700 hover:border-blue-600 rounded-full active:bg-blue-600 active:scale-95 transition-transform active:border-blue-1000"
+					on:click={() => save(word, definitions, questions)}
+				>
+					Button
+				</button>
+			</form>
 		</div>
 	</div>
 </form>
