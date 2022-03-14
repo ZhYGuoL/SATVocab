@@ -14,24 +14,27 @@
         if (word.length != 0 && definitions.length != 0) {
 			if (word in questions) {
 				for (let i = 0; i < definitions.length; i++) {
-					questions[word].append(definitions)
+					questions[word].append(definitions[i])
 				}
-			}
-			else {
+			} else {
 				questions[word] = questions
 			}
 			wordInput.value = ''
 			definitionInput.value = []
 			wordWarning = ''
 			definitionWarning = ''
-			return
-		}
-		else {
-			if (word.length != 0) {
+			word = ''
+			definitions = []
+		} else {
+			if (word.length == 0) {
 				wordWarning = 'A word is needed'
+			} else {
+				wordWarning = ''
 			}
-			if (definitions.length != 0) {
+			if (definitions.length == 0) {
 				definitionWarning = 'A definition is needed'
+			} else {
+				definitionWarning = ''
 			}
 		}
     }
@@ -101,7 +104,7 @@
 				<button
 					type="button"
 					class="bg-blue-500 text-white font-bold py-2 px-10 border-b-4 border-blue-700 hover:border-blue-600 rounded-full active:bg-blue-600 active:scale-95 transition-transform active:border-blue-1000"
-					on:click={() => save(word, definitions, questions)}
+					on:click={() => save({word}, definitions, questions)}
 				>
 					Button
 				</button>
@@ -109,6 +112,8 @@
 		</div>
 	</div>
 </form>
+
+<p>{word}{word.length}</p>
 
 <!--
     TO DO:
